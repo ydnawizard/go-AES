@@ -1,13 +1,15 @@
 package main
 
-import "fmt"
+import (
+	//"fmt"
+	"github.com/ydnawizard/AES/src/read"
+)
 
-func Hello(name string) string {
-	message := fmt.Sprintf("Hi, %v. Welcome!",name)
-	return message
-}
 
 func main() {
-	var name string = Hello("Andy")
-	fmt.Printf("%s\n",name)
+	//var FilePath string
+	FileContentsPointer := new(read_file.FileContents)
+	Contents := read_file.ReadFile("plaintext.txt")
+	read_file.GrabRunes(FileContentsPointer,Contents)
 }
+
