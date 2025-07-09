@@ -29,22 +29,32 @@ func ReadFile(FilePath string) []byte{
 }
 
 func GrabRunes (FileContentsPointer *FileContents,Contents []byte) {
-	RuneCount := 0
 	WordCount := 0
 	LineCount := 0
-	var TempWord []string
-	var TempLine []string
+	var TempWord []rune
+	var TempLine []rune
 	for RuneCount := 0; RuneCount < len(Contents); RuneCount++ {
-		if Contents [RuneCount] == ' ' {
-			FileContentsPointer.Words = append(FileContentsPointer.Words,TempWord)
+		if Contents[RuneCount] == '\n' {
+			FileContentsPointer.Words = append(FileContentsPointer.Words,string(TempWord))
+			FileContentsPointer.Lines = append(FileContentsPointer.Lines,string(TempLine))
+			FileContentsPointer.RuneCount += 1
+			fmt.Printf("%s\n",FileContentsPointer.Lines[LineCount])
+			LineCount += 1
 			WordCount += 1
-		}
-		if Contents[RuneCount] != 0 {
+			TempLine = TempLine[:0]
+		}else if Contents[RuneCount] == ' ' {
+			FileContentsPointer.Runes = append(FileContentsPointer.Runes,rune(Contents[RuneCount]))
+			FileContentsPointer.Words = append(FileContentsPointer.Words,string(TempWord))
+			TempLine = append(TempLine,rune(Contents[RuneCount]))
+			FileContentsPointer.RuneCount += 1
+			WordCount += 1
+			TempWord = TempWord[:0]
+		}else if Contents[RuneCount] != 0 {
 			FileContentsPointer.Runes = append(FileContentsPointer.Runes,rune(Contents[RuneCount]))
 			TempWord = append(TempWord,rune(Contents[RuneCount]))
 			TempLine = append(TempLine,rune(Contents[RuneCount]))
 			FileContentsPointer.RuneCount += 1
-			fmt.Printf("%c ",FileContentsPointer.Runes[RuneCount])
+			//fmt.Printf("%c ",FileContentsPointer.Runes[RuneCount])
 		}
 	}
 	fmt.Printf("%d",FileContentsPointer.RuneCount)
